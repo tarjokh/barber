@@ -28,7 +28,7 @@ class Product(models.Model):
     category = models.CharField(max_length=200, null=True, choices=CATEGOTY)
     description = models.CharField(max_length=200, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
-    tags =  models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag)
 
     def __str__(self):
         return self.name
@@ -36,9 +36,9 @@ class Product(models.Model):
 
 class Order(models.Model):
     STATUS = (
-        ('Pending', 'Pending'),
-        ('Out for delivery', 'Out for delivery'),
-        ('Delivered', 'Delivered'),
+        ('pending', 'Pending'),
+        ('out', 'Out for delivery'),
+        ('delivered', 'Delivered'),
     ) 
     customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
     product = models.ForeignKey(Product , null=True, on_delete=models.SET_NULL)
@@ -47,3 +47,4 @@ class Order(models.Model):
 
     def __str__(self):
         return self.status
+        
