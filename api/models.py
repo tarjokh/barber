@@ -11,39 +11,25 @@ class User(models.Model):
     def __str__(self):
         return self.first_name + (' ') + self.second_name
 
-
-class Tag(models.Model):
-    name = models.CharField(max_length=200, null=True)
-
-    def __str__(self):
-        return self.name
-
-
-class Product(models.Model):
-    CATEGOTY = (('Indoor', 'Indoor'),
-                ('Out Door', 'Out Door'),
-    )
-    name = models.CharField(max_length=200, null=True)
-    price = models.FloatField(null=True)
-    category = models.CharField(max_length=200, null=True, choices=CATEGOTY)
-    description = models.CharField(max_length=200, null=True)
-    date_created = models.DateTimeField(auto_now_add=True, null=True)
-    tags = models.ManyToManyField(Tag)
-
-    def __str__(self):
-        return self.name
-
-
 class Order(models.Model):
-    STATUS = (
-        ('pending', 'Pending'),
-        ('out', 'Out for delivery'),
-        ('delivered', 'Delivered'),
-    ) 
-    customer = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    product = models.ForeignKey(Product , null=True, on_delete=models.SET_NULL)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
-    status = models.CharField(max_length=200, null=True, choices=STATUS)
+    count_of_people = models.FloatField(null=True)
+    comment = models.CharField(max_length=200, null=True)
+    
+    def __str__(self):
+        return self.date_created
+
+class Categories(models.Model):
+    name = models.CharField(max_length=200, null=True) 
 
     def __str__(self):
-        return self.status
+        return self.name    
+        
+class Places(models.Model):
+    name = models.CharField(max_length=200, null=True)
+    category = models.ManyToManyField(Categories)
+    address = models.CharField(max_length=200, null=True)
+    url = models.CharField(max_length=200, null=True)
+
+    def __str__(self):
+        return self.name 

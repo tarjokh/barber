@@ -80,17 +80,17 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         model = User
         fields = ('token', 'id', 'first_name', 'second_name', 'email_address', 'password', 'phone_number', 'date_created')
 
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = ['id', 'name', 'price',' category', 'description', 'date_created', 'tags']
-
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ['id', 'customer', 'product', 'date_created', 'status']
+        fields = ['id', 'date_created', 'count_of_people', 'comment']
 
-class TagSerializer(serializers.ModelSerializer):
+class CategoriesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Tag
+        model = Categories
         fields = ['id', 'name']
+
+class PlacesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Places
+        fields = ['id', 'name', 'category', 'address', 'url']
