@@ -21,7 +21,7 @@ def current_user(request):
 
 class UserList(APIView):
 
-    permission_classes = (permissions.AllowAny,)
+    permission_classes = (permissions.IsAuthenticated)
 
     def post(self, request, format=None):
         serializer = UserSerializerWithToken(data=request.data)
