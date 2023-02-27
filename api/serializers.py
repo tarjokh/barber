@@ -78,19 +78,34 @@ class UserSerializerWithToken(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('token', 'id', 'first_name', 'second_name', 'email_address', 'password', 'phone_number', 'date_created')
-
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = ['id', 'date_created', 'count_of_people', 'comment']
+        fields = ('token', 'id', 'first_name', 'second_name', 'email_address', 'password', 'phone_number', 'date_created', 'image')
 
 class CategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
         fields = ['id', 'name']
 
-class PlacesSerializer(serializers.ModelSerializer):
+class RestaurantsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Places
-        fields = ['id', 'name', 'category', 'address', 'url']
+        model = Restaurants
+        fields = ['id', 'name', 'description', 'image']
+
+class ReservationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservation2
+        fields = ['id', 'userId', 'date',' time', 'party_size', 'comment']
+
+class ImagesSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = Image
+        fields = ['id', 'name', 'image']
+
+class RatesSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = Rates
+        fields = ['id', 'userId', 'comment', 'stars', 'time']
+
+class ReviewsSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = Reviews
+        fields = ['id', 'name', 'description', 'image', 'rate']

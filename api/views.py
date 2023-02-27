@@ -41,37 +41,102 @@ def create_user(request):
         return JsonResponse(serializer.errors,status=400)
 
 @csrf_exempt
-def check_login(request,email):
+def check_login(request, email_address):
     try:
-        user = User.objects.filter(email=email)
+        user = User.objects.filter(email_address=email_address)
     except:
-        return HttpResponse(status=404)
-
+        return HttpResponse(status=404) 
 
     if request.method == 'GET':
        serializer = UserSerializer(user,many=True)
        return JsonResponse(serializer.data,safe=False)
 
 @csrf_exempt
-def get_user(request,id):
+def get_user(request, id):
     try:
         user = User.objects.get(pk=id)
     except:
         return HttpResponse(status=404)
-
 
     if request.method == 'GET':
        serializer = UserSerializer(user)
        return JsonResponse(serializer.data)
 
 @csrf_exempt
-def make_order(request):
-    if request.method == 'POST':
+def restaurants_list(request):
+    if request.method == 'GET':
+        restaurants = Restaurants.objects.all().order_by('name').reverse()
+        serializer = RestaurantsSerializer(restaurants ,many=True)
+        return JsonResponse(serializer.data, safe=False)
+    elif request.method == 'POST':
         data = JSONParser().parse(request)
-        serializer = OrderSerializer(data=data)
+        serializer = RestaurantsSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data,status=201)
-        return JsonResponse(serializer.errors,status=400)
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
 
+@csrf_exempt 
+def reservation_list(request): 
+    if request.method == 'GET': 
+        reservation = Reservation2.objects.all() 
+        serializer = ReservationSerializer(reservation, many=True) 
+        return JsonResponse(serializer.data, safe=False) 
+ 
+    elif request.method == 'POST': 
+        data = JSONParser().parse(request) 
+        serializer = ReservationSerializer(data=data) 
+        if serializer.is_valid(): 
+            serializer.save() 
+            return JsonResponse(serializer.data, status=201) 
+        return JsonResponse(serializer.errors, status=400) 
+ 
+@csrf_exempt 
+def reservation_list_detail(request): 
+    if request.method == 'GET': 
+        reservation = Restaurants.objects.all().order_by('id').reverse()
+        serializer = ReservationSerializer(reservation) 
+        return JsonResponse(serializer.data) 
 
+    elif request.method == 'PUT': 
+        data = JSONParser().parse(request) 
+        serializer = ReservationSerializer(reservation, data=data) 
+        if serializer.is_valid(): 
+            serializer.save() 
+            return JsonResponse(serializer.data) 
+        return JsonResponse(serializer.errors, status=400) 
+ 
+    elif request.method == 'POST': 
+        data = JSONParser().parse(request) 
+        serializer = ReservationSerializer(data=data) 
+        if serializer.is_valid(): 
+            serializer.save() 
+            return JsonResponse(serializer.data, status=201) 
+        return JsonResponse(serializer.errors, status=400)
+
+    elif request.method == 'DELETE': 
+        reservation.delete() 
+        return HttpResponse(status=204)
+        
+@csrf_exempt 
+def reviews_list(request): 
+    if request.method == 'GET': 
+        reviews = Reviews.objects.all().order_by('id').reverse()
+        serializer = ReviewsSerializer(reviews) 
+        return JsonResponse(serializer.data) 
+
+    elif request.method == 'PUT': 
+        data = JSONParser().parse(request) 
+        serializer = ReviewsSerializer(reviews, data=data) 
+        if serializer.is_valid(): 
+            serializer.save() 
+            return JsonResponse(serializer.data) 
+        return JsonResponse(serializer.errors, status=400) 
+
+    elif request.method == 'POST': 
+        data = JSONParser().parse(request) 
+        serializer = ReviewsSerializer(data=data) 
+        if serializer.is_valid(): 
+            serializer.save() 
+            return JsonResponse(serializer.data, status=201) 
+        return JsonResponse(serializer.errors, status=400)
